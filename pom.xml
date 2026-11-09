@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- How we identify the project--> 
+    <groupId>org.solver</groupId>
+    <artifactId>maxsat-solver</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Set the java version for maven -->
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Dependencies are exterbal libraries needed to compile, build and run our project -->
+    <dependencies>
+        <!-- JUnit 5 for Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+    <plugins>
+      <!-- JaCoCo Plugin Integration -->
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.12</version>
+            <executions>
+            <!-- 1. Attach runtime agent to collect coverage data -->
+            <execution>
+                <id>prepare-agent</id>
+                <goals>
+                <goal>prepare-agent</goal>
+                </goals>
+            </execution>
+            <!-- 2. Generate reports after tests execute -->
+            <execution>
+                <id>report</id>
+                <phase>test</phase>
+                <goals>
+                <goal>report</goal>
+                </goals>
+            </execution>
+            </executions>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.5.1</version>
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>org.solver.Main</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+  </build>
+
+</project>

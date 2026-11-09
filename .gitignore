@@ -1,0 +1,16 @@
+# Compiled class files and build directories
+*.class
+target/
+build/
+bin/
+
+# Personal IDE settings (IntelliJ, Eclipse, VS Code)
+.idea/
+*.iml
+.metadata/
+.vscode/
+
+# MAC DSTORE
+.DS_Store
+
+.csv

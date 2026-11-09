@@ -1,0 +1,46 @@
+
+stages:
+  - build
+  - test
+  - benchmark
+
+compile_code:
+  stage: build
+  tags:
+    - shell
+  script:
+    - echo "Compiling the Java source code..."
+    - mvn compile
+
+
+run_unit_tests:
+  stage: test
+  tags:
+    - shell
+  script:
+    - mvn clean test
+  artifacts:
+    name: "jacoco-coverage-report"
+    when: always
+    paths:
+      - target/site/jacoco/
+    expire_in: 30 days
+  
+run_benchmark:
+  stage: benchmark
+  tags:
+    - shell
+  script:
+    - mvn clean package -DskipTests
+    - |
+      Get-ChildItem -Path "benchmarks\*.cnf" | ForEach-Object {
+          Write-Host "Running instance: $($_.FullName)"
+          java -Xms256m -Xmx2g -jar target/maxsat-solver-1.0-SNAPSHOT.jar $_.FullName 5000
+      }
+  artifacts:
+    name: "performance-benchmark-logs"
+    when: always
+    paths:
+      - benchmark_results.csv
+    expire_in: 30 days
+  allow_failure: true
